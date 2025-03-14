@@ -1,7 +1,7 @@
 use crate::types::errors::CommonsError;
 use clap_complete::Shell;
 use std::{
-    path::PathBuf,
+    path::Path,
     process::{Command, Stdio},
 };
 
@@ -28,7 +28,7 @@ pub fn execute_commands(commands: Vec<&str>) -> Result<(), CommonsError> {
     execute_command(&command)
 }
 
-pub fn execute_commands_in_dir(dir: &PathBuf, commands: Vec<&str>) -> Result<(), CommonsError> {
+pub fn execute_commands_in_dir(dir: &Path, commands: Vec<&str>) -> Result<(), CommonsError> {
     let dir = dir.as_os_str().to_str().unwrap();
     let mut updated_commands = commands;
     let cd_command = format!("cd {}", dir);
