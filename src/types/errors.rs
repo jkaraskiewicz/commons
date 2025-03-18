@@ -8,4 +8,6 @@ pub enum CommonsError {
     IoError(#[from] io::Error),
     #[error("Var error: {0}")]
     VarError(#[from] env::VarError),
+    #[error("Git error: {0}")]
+    GitError(#[from] git2::Error),
 }
