@@ -14,3 +14,8 @@ pub fn current_timestamp() -> u64 {
 pub fn timestamp_for_systemtime(system_time: &SystemTime) -> u64 {
     system_time.duration_since(UNIX_EPOCH).unwrap().as_secs()
 }
+
+pub fn formatted_systemtime(time: &SystemTime) -> String {
+    let datetime: DateTime<Local> = time.to_owned().into();
+    datetime.format("%Y-%m-%d %H-%M-%S").to_string()
+}
