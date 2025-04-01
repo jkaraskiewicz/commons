@@ -1,10 +1,11 @@
 use crate::types::errors::CommonsError;
 use std::{
-    fs::{self, File},
+    fs::File,
     io::{Read, Write},
     path::Path,
 };
 
+// Returns the content of a file for a given path
 pub fn read_file<P: AsRef<Path>>(path: P) -> Result<String, CommonsError> {
     let mut file = File::open(path)?;
     let mut contents = String::new();
@@ -12,6 +13,8 @@ pub fn read_file<P: AsRef<Path>>(path: P) -> Result<String, CommonsError> {
     Ok(contents)
 }
 
+// Writes a string content into a file for a given path.
+// Overwrites the file if it exists, creates a new one if it does not.
 pub fn write_file<P: AsRef<Path>>(path: P, content: &str) -> Result<(), CommonsError> {
     let mut file = std::fs::OpenOptions::new()
         .write(true)
@@ -21,16 +24,4 @@ pub fn write_file<P: AsRef<Path>>(path: P, content: &str) -> Result<(), CommonsE
     file.write_all(content.as_bytes())?;
     file.flush()?;
     Ok(())
-}
-
-pub fn exists_directory<P: AsRef<Path>>(path: P) -> bool {
-    fs::metadata(path)
-        .map(|metadata| metadata.is_dir())
-        .unwrap_or(false)
-}
-
-pub fn exists_file<P: AsRef<Path>>(path: P) -> bool {
-    fs::metadata(path)
-        .map(|metadata| metadata.is_file())
-        .unwrap_or(false)
 }

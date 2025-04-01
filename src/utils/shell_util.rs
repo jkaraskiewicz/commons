@@ -5,6 +5,7 @@ use std::{
     process::{Command, Stdio},
 };
 
+// Executes a command in the interactive shell environment.
 pub fn execute_command(command: &str) -> Result<(), CommonsError> {
     let shell = current_shell().to_string();
 
@@ -23,11 +24,14 @@ pub fn execute_command(command: &str) -> Result<(), CommonsError> {
     Ok(())
 }
 
+// Executes a list of commands in the interactive shell environment.
 pub fn execute_commands(commands: Vec<&str>) -> Result<(), CommonsError> {
     let command = format!("({})", commands.join(" ; "));
     execute_command(&command)
 }
 
+// Executes a list of commands in the interactive shell environment
+// in the context of the given directory.
 pub fn execute_commands_in_dir(dir: &Path, commands: Vec<&str>) -> Result<(), CommonsError> {
     let dir = dir.as_os_str().to_str().unwrap();
     let mut updated_commands = commands;

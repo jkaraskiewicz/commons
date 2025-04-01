@@ -1,1 +1,1 @@
-pub mod vec_traits;
+pub mod collections;
