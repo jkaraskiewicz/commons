@@ -2,8 +2,8 @@ use crate::types::errors::CommonsError;
 use std::env;
 use std::path::PathBuf;
 
-// Takes a path passed as a string and replaces the occurences
-// of ~ with the HOME directory.
+/// Takes a path passed as a string and replaces the occurences
+/// of ~ with the HOME directory.
 pub fn expand_home_dir_in_path(path: &str) -> Result<PathBuf, CommonsError> {
     let home_dir = env::var("HOME")?;
     if path.starts_with("~") {
@@ -14,7 +14,7 @@ pub fn expand_home_dir_in_path(path: &str) -> Result<PathBuf, CommonsError> {
     }
 }
 
-// Returns a path to the HOME directory.
+/// Returns a path to the HOME directory.
 pub fn get_home_dir_path() -> Result<PathBuf, CommonsError> {
     let home_dir = env::var("HOME")?;
     Ok(PathBuf::from(home_dir))

@@ -5,7 +5,7 @@ use std::{
     process::{Command, Stdio},
 };
 
-// Executes a command in the interactive shell environment.
+/// Executes a command in the interactive shell environment.
 pub fn execute_command(command: &str) -> Result<(), CommonsError> {
     let shell = current_shell().to_string();
 
@@ -24,22 +24,26 @@ pub fn execute_command(command: &str) -> Result<(), CommonsError> {
     Ok(())
 }
 
-// Executes a list of commands in the interactive shell environment.
+/// Executes a list of commands in the interactive shell environment.
 pub fn execute_commands(commands: Vec<&str>) -> Result<(), CommonsError> {
     let command = format!("({})", commands.join(" ; "));
     execute_command(&command)
 }
 
-// Executes a list of commands in the interactive shell environment
-// in the context of the given directory.
-pub fn execute_commands_in_dir(dir: &Path, commands: Vec<&str>) -> Result<(), CommonsError> {
-    let dir = dir.as_os_str().to_str().unwrap();
+/// Executes a list of commands in the interactive shell environment
+/// in the context of the given directory.
+pub fn execute_commands_in_dir<P: AsRef<Path>>(
+    dir: P,
+    commands: Vec<&str>,
+) -> Result<(), CommonsError> {
+    let dir = dir.as_ref().as_os_str().to_str().unwrap();
     let mut updated_commands = commands;
     let cd_command = format!("cd {}", dir);
     updated_commands.insert(0, &cd_command);
     execute_commands(updated_commands)
 }
 
-fn current_shell() -> Shell {
+/// Returns the current shell
+pub fn current_shell() -> Shell {
     clap_complete::Shell::from_env().unwrap_or(Shell::Zsh)
 }
