@@ -1,8 +1,6 @@
 <h1>commons</h1>
 <h2>Private common library</h2>
 
-------------------------------------------------------------------------
-
 ### Traits
 
 #### Collections
