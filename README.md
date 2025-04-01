@@ -9,7 +9,7 @@
 
 #### Collections
 
-Contains trait simplifying checking for element's existence inside a collection.
+`Contains` trait simplifying checking for element's existence inside a collection.
 
 ```rust
     pub trait Contains<T: Eq> {
@@ -22,7 +22,7 @@ Contains trait simplifying checking for element's existence inside a collection.
 #### Date time
 
 - Current date, current timestamp
-- Convert between different Datetime formats
+- Convert between different datetime formats
 
 #### File
 
@@ -31,14 +31,14 @@ Contains trait simplifying checking for element's existence inside a collection.
 
 #### Hash
 
-- Calculate SHA256 hash for an arbitrary input
-- Calculate SHA256 hash for a file
-- Generate a UUID 
+- Calculate _SHA256_ hash for an arbitrary input
+- Calculate _SHA256_ hash for a file
+- Generate a _UUID_ 
 
 #### Path
 
-- Get HOME directory path
-- Expand ~ to a full HOME path
+- Get _HOME_ directory path
+- Expand ~ to a full _HOME_ path
 
 #### Shell
 
