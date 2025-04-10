@@ -1,8 +1,8 @@
 use crate::types::errors::CommonsError;
 use std::{
-    fs::File,
+    fs::{self, File},
     io::{Read, Write},
-    path::Path,
+    path::{Path, PathBuf},
 };
 
 /// Returns the content of a file for a given path
@@ -33,5 +33,24 @@ pub fn delete_file<P: AsRef<Path>>(path: P) -> Result<(), CommonsError> {
     } else {
         std::fs::remove_dir_all(path)?;
     };
+    Ok(())
+}
+
+/// Copies a file or a directory
+pub fn copy<P: AsRef<Path>, Q: AsRef<Path>>(from: P, to: Q) -> Result<(), CommonsError> {
+    let source_path = from.as_ref();
+    let destination_path = to.as_ref();
+
+    if source_path.is_dir() {
+        dircpy::copy_dir(source_path, destination_path)?;
+    } else {
+        let count = destination_path.components().count();
+        let dir_path: PathBuf = destination_path.components().take(count - 1).collect();
+        if !dir_path.exists() {
+            fs::create_dir_all(&dir_path)?;
+        }
+        fs::copy(source_path, destination_path)?;
+    };
+
     Ok(())
 }
