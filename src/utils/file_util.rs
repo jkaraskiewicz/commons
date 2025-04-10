@@ -16,6 +16,12 @@ pub fn read_file<P: AsRef<Path>>(path: P) -> Result<String, CommonsError> {
 /// Writes a string content into a file for a given path.
 /// Overwrites the file if it exists, creates a new one if it does not.
 pub fn write_file<P: AsRef<Path>>(path: P, content: &str) -> Result<(), CommonsError> {
+    let count = path.as_ref().components().count();
+    let dir_path: PathBuf = path.as_ref().components().take(count - 1).collect();
+    if !dir_path.exists() {
+        fs::create_dir_all(&dir_path)?;
+    }
+
     let mut file = std::fs::OpenOptions::new()
         .write(true)
         .truncate(true)
