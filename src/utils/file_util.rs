@@ -5,12 +5,20 @@ use std::{
     path::{Path, PathBuf},
 };
 
-/// Returns the content of a file for a given path
+/// Returns the content of a file for a given path as UTF-8 string
 pub fn read_file<P: AsRef<Path>>(path: P) -> Result<String, CommonsError> {
     let mut file = File::open(path)?;
     let mut contents = String::new();
     file.read_to_string(&mut contents)?;
     Ok(contents)
+}
+
+/// Returns the content of a file for a given path as Vec<u8>
+pub fn read_binary_file<P: AsRef<Path>>(path: P) -> Result<Vec<u8>, CommonsError> {
+    let mut file = File::open(path)?;
+    let mut buffer = Vec::new();
+    file.read_to_end(&mut buffer)?;
+    Ok(buffer)
 }
 
 /// Writes a string content into a file for a given path.
@@ -28,6 +36,25 @@ pub fn write_file<P: AsRef<Path>>(path: P, content: &str) -> Result<(), CommonsE
         .create(true)
         .open(path)?;
     file.write_all(content.as_bytes())?;
+    file.flush()?;
+    Ok(())
+}
+
+/// Writes a binary content into a file for a given path.
+/// Overwrites the file if it exists, creates a new one if it does not.
+pub fn write_binary_file<P: AsRef<Path>>(path: P, content: &[u8]) -> Result<(), CommonsError> {
+    let count = path.as_ref().components().count();
+    let dir_path: PathBuf = path.as_ref().components().take(count - 1).collect();
+    if !dir_path.exists() {
+        fs::create_dir_all(&dir_path)?;
+    }
+
+    let mut file = std::fs::OpenOptions::new()
+        .write(true)
+        .truncate(true)
+        .create(true)
+        .open(path)?;
+    file.write_all(content)?;
     file.flush()?;
     Ok(())
 }
